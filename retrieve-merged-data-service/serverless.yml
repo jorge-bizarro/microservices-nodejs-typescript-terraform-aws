@@ -1,0 +1,61 @@
+service: retrieve-merged-data-lambda
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+  region: us-west-2
+  memorySize: 128
+  timeout: 15
+  architecture: arm64
+  logRetentionInDays: 3
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+    CACHE_TABLE_NAME: ${ssm:/challengue-rimac/dynamodb/swapi_characters_cache_table_name}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: ${ssm:/challengue-rimac/dynamodb/swapi_characters_cache_table_arn}
+
+functions:
+  retrieveMergedData:
+    handler: src/handler.handler
+    events:
+      - http:
+          path: /fusionados/{id}
+          method: get
+          cors: true
+
+plugins:
+  - serverless-offline
+
+custom:
+  esbuild:
+    bundle: true
+    minify: true
+    target: 'node20'
+    platform: 'node'
+    sourcemap: true
+    sourcesContent: false
+    external:
+      - '@aws-sdk/*'
+      - axios
+      - zod
+  prune:
+    automatic: true
+    number: 1
+
+package:
+  individually: true
+  patterns:
+    - '!**'
+    - 'src/**'
+    - 'node_modules/**'

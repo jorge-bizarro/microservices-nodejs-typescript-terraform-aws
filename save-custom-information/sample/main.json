@@ -1,0 +1,9 @@
+{
+    "requestContext": {
+        "requestId": "a0c7b7a4-9a5b-4e3f-9b6e-5a6f4b7c8d9e"
+    },
+    "body": {
+        "name": "Jhon",
+        "age": 30
+    }
+}

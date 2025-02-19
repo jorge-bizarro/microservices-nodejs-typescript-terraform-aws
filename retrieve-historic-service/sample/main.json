@@ -1,0 +1,9 @@
+{
+    "requestContext": {
+        "requestId": "a0c7b7a4-9a5b-4e3f-9b6e-5a6f4b7c8d9e"
+    },
+    "queryStringParameters": {
+        "limit": "3",
+        "lastKey": "%7B%22id%22%3A%22character-30%22%2C%22id_sorted%22%3A%22ALL%22%2C%22created_at%22%3A1739936688939%7D"
+    }
+}
