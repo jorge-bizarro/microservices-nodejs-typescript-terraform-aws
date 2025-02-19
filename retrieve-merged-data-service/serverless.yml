@@ -39,6 +39,8 @@ functions:
       - http:
           path: "/fusionados/{id}"
           method: "get"
+          cors: true
+          private: true
           documentation:
             summary: "Retorna los personajes de Star Wars con un consejo"
             description: "Integra 2 APIs externas para obtener los personajes de Star Wars y sus consejos además usa un cache para bajar la latencia"

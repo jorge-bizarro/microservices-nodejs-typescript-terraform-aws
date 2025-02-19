@@ -9,8 +9,8 @@ const tableName = process.env.CACHE_TABLE_NAME
 
 const swapiCharacterSchema = z.object({
   name: z.string(),
-  height: z.number(),
-  mass: z.number(),
+  height: z.string(),
+  mass: z.string(),
   hair_color: z.string(),
   skin_color: z.string(),
   eye_color: z.string(),
@@ -20,8 +20,8 @@ const swapiCharacterSchema = z.object({
 
 const swapiCharacterSchemaCache = z.object({
   name: z.string(),
-  height: z.number(),
-  mass: z.number(),
+  height: z.string(),
+  mass: z.string(),
   hair_color: z.string(),
   skin_color: z.string(),
   eye_color: z.string(),
