@@ -26,17 +26,37 @@ provider:
           Resource: ${ssm:/challengue-rimac/dynamodb/swapi_characters_cache_table_arn}
 
 functions:
+  swaggerUI:
+    handler: swagger.handler
+    events:
+      - http:
+          path: docs
+          method: get
+          cors: true
   retrieveMergedData:
     handler: src/handler.handler
     events:
       - http:
-          path: /fusionados/{id}
-          method: get
-          cors: true
-          private: true
+          path: "/fusionados/{id}"
+          method: "get"
+          documentation:
+            summary: "Retorna los personajes de Star Wars con un consejo"
+            description: "Integra 2 APIs externas para obtener los personajes de Star Wars y sus consejos además usa un cache para bajar la latencia"
+            pathParams:
+            - name: "id"
+              description: "ID del personaje"
+              schema:
+                type: "string"
+            methodResponses:
+              - statusCode: 200
+                responseBody:
+                  description: "Successful response"
+                responseModels:
+                  "application/json": SearchCharacterResponse
 
 plugins:
   - serverless-offline
+  - serverless-openapi-documentation
 
 custom:
   esbuild:
@@ -53,6 +73,43 @@ custom:
   prune:
     automatic: true
     number: 1
+  documentation:
+    version: "1.0.0"
+    title: "Obtener personaje de Star Wars y un consejo suyo"
+    description: "Obtener personajes de Star Wars y un consejo suyo"
+    models:
+      - name: SearchCharacterResponse
+        contentType: "application/json"
+        schema:
+          type: object
+          properties:
+            nombre:
+              type: string
+              description: "Nombre del personaje"
+            altura:
+              type: number
+              description: "Altura del personaje"
+            masa:
+              type: number
+              description: "Peso del personaje"
+            consejo:
+              type: string
+              description: "Consejo del personaje"
+            color_de_cabello:
+              type: string
+              description: "Color de cabello del personaje"
+            color_de_ojos:
+              type: string
+              description: "Color de ojos del personaje"
+            color_de_piel:
+              type: string
+              description: "Color de piel del personaje"
+            anio_de_nacimiento:
+              type: number
+              description: "Año de nacimiento del personaje"
+            genero:
+              type: string
+              description: "Genero del personaje"
 
 package:
   individually: true

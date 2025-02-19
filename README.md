@@ -4,6 +4,7 @@
 ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
 ![Terraform](https://img.shields.io/badge/Terraform-%23734F96.svg?style=for-the-badge&logo=terraform&logoColor=white)
 ![Serverless](https://img.shields.io/badge/Serverless-%23000000.svg?style=for-the-badge&logo=serverless&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-F7DF1E.svg?style=for-the-badge&logo=Swagger&logoColor=black)
 
 ### Features
 

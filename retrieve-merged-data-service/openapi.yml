@@ -1,0 +1,53 @@
+openapi: 3.0.0
+components:
+  schemas:
+    SearchCharacterResponse:
+      type: object
+      properties:
+        nombre:
+          type: string
+          description: Nombre del personaje
+        altura:
+          type: number
+          description: Altura del personaje
+        masa:
+          type: number
+          description: Peso del personaje
+        consejo:
+          type: string
+          description: Consejo del personaje
+        color_de_cabello:
+          type: string
+          description: Color de cabello del personaje
+        color_de_ojos:
+          type: string
+          description: Color de ojos del personaje
+        color_de_piel:
+          type: string
+          description: Color de piel del personaje
+        anio_de_nacimiento:
+          type: number
+          description: Año de nacimiento del personaje
+        genero:
+          type: string
+          description: Genero del personaje
+  securitySchemes: {}
+info:
+  title: Obtener personaje de Star Wars y un consejo suyo
+  description: Obtener personajes de Star Wars y un consejo suyo
+  version: 1.0.0
+paths:
+  '//fusionados/{id}':
+    get:
+      operationId: retrieveMergedData
+      summary: Retorna los personajes de Star Wars con un consejo
+      description: >-
+        Integra 2 APIs externas para obtener los personajes de Star Wars y sus
+        consejos además usa un cache para bajar la latencia
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchCharacterResponse'
