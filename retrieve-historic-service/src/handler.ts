@@ -1,6 +1,6 @@
 import { DynamoDBClient, QueryCommand, ScanCommand } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
-import { APIGatewayProxyEvent, APIGatewayProxyHandler, Context } from 'aws-lambda';
+import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { z } from 'zod';
 
 const dynamoDb = new DynamoDBClient({ region: process.env.AWS_REGION });
@@ -43,7 +43,7 @@ const log = (level: string, message: string, context: Record<string, any> = {}) 
   }));
 };
 
-export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent, ctx: Context) => {
+export const handler = async (event: APIGatewayProxyEvent, ctx: Context) => {
   ctx.callbackWaitsForEmptyEventLoop = false;
   const requestId = event.requestContext.requestId;
   const context = { requestId, functionName: process.env.AWS_LAMBDA_FUNCTION_NAME };
@@ -51,15 +51,15 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   const limit = event.queryStringParameters?.limit ? parseInt(event.queryStringParameters.limit) : 10;
   const lastKey = event.queryStringParameters?.lastKey ? JSON.parse(decodeURIComponent(event.queryStringParameters.lastKey)) : undefined;
 
-  log('info', `Buscando los personajes con limit: ${limit} y lastKey: ${JSON.stringify(lastKey)}`, context);
-
-  const totalCountResult = await dynamoDb.send(new ScanCommand({ TableName: TABLE_NAME, Select: "COUNT" }));
-  const totalCount = totalCountResult.Count || 0;
-  const totalPages = Math.ceil(totalCount / limit);
-
-  log('info', `Total de personajes: ${totalCount} y total de paginas: ${totalPages}`, context);
-
   try {
+    log('info', `Buscando los personajes con limit: ${limit} y lastKey: ${JSON.stringify(lastKey)}`, context);
+
+    const totalCountResult = await dynamoDb.send(new ScanCommand({ TableName: TABLE_NAME, Select: "COUNT" }));
+    const totalCount = totalCountResult.Count || 0;
+    const totalPages = Math.ceil(totalCount / limit);
+
+    log('info', `Total de personajes: ${totalCount} y total de paginas: ${totalPages}`, context);
+
     const result = await dynamoDb.send(
       new QueryCommand({
         TableName: TABLE_NAME,

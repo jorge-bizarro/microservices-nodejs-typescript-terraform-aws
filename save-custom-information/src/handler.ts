@@ -1,6 +1,6 @@
 import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
 import { marshall } from '@aws-sdk/util-dynamodb';
-import { APIGatewayProxyEvent, APIGatewayProxyHandler, Context } from 'aws-lambda';
+import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { randomUUID } from "node:crypto";
 
 const dynamoDb = new DynamoDBClient({ region: process.env.AWS_REGION });
@@ -15,7 +15,7 @@ const log = (level: string, message: string, context: Record<string, any> = {}) 
   }));
 };
 
-export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent, ctx: Context) => {
+export const handler = async (event: APIGatewayProxyEvent, ctx: Context) => {
   ctx.callbackWaitsForEmptyEventLoop = false;
   const requestId = event.requestContext.requestId;
   const context = { requestId, functionName: process.env.AWS_LAMBDA_FUNCTION_NAME };

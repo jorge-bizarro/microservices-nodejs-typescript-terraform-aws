@@ -33,6 +33,7 @@ functions:
           path: /fusionados/{id}
           method: get
           cors: true
+          private: true
 
 plugins:
   - serverless-offline
@@ -59,3 +60,18 @@ package:
     - '!**'
     - 'src/**'
     - 'node_modules/**'
+
+resources:
+  Outputs:
+    ApiGatewayRestApiId:
+      Value: !Ref ApiGatewayRestApi
+      Export:
+        Name: ApiGatewayRestApiId
+
+  Resources:
+    StoreApiGatewayIdInSSM:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Name: "/challenge-rimac/retrieve-merged-data-service/api-gateway-id"
+        Type: String
+        Value: !Ref ApiGatewayRestApi

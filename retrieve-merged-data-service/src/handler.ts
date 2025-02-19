@@ -105,7 +105,7 @@ export const handler = async (event: APIGatewayProxyEvent, ctx: Context): Promis
     const cachedItem = await dynamoDb.send(queryCommand);
 
     if (cachedItem.Items?.at(0)) {
-      const character = unmarshall(cachedItem.Items.at(0) || {});
+      const character = unmarshall(cachedItem.Items.at(0) ?? {});
       const validatedCharacter = swapiCharacterSchemaCache.parse(character);
       const translatedCharacter = translateFieldsToSpanishFromCache(validatedCharacter);
       return {

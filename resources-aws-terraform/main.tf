@@ -113,7 +113,45 @@ resource "aws_ssm_parameter" "custom_data_table_arn" {
   }
 }
 
+data "aws_api_gateway_rest_api" "retrieve_merged_data_api" {
+  name = "dev-retrieve-merged-data-lambda"
+}
 
+resource "aws_api_gateway_usage_plan" "daily_limit_plan" {
+  name        = "daily-limit-plan"
+  description = "Limit API usage to 100 requests per day"
+
+  api_stages {
+    api_id = data.aws_api_gateway_rest_api.retrieve_merged_data_api.id
+    stage  = "dev"
+  }
+
+  quota_settings {
+    limit  = 100
+    period = "DAY"
+  }
+
+  throttle_settings {
+    rate_limit  = 5
+    burst_limit = 10
+  }
+}
+
+resource "aws_api_gateway_api_key" "my_api_key" {
+  name    = "my-api-key"
+  enabled = true
+}
+
+resource "aws_api_gateway_usage_plan_key" "my_usage_plan_key" {
+  key_id        = aws_api_gateway_api_key.my_api_key.id
+  key_type      = "API_KEY"
+  usage_plan_id = aws_api_gateway_usage_plan.daily_limit_plan.id
+}
+
+output "api_key_value" {
+  value     = aws_api_gateway_api_key.my_api_key.value
+  sensitive = true
+}
 
 output "table_name" {
   value = aws_dynamodb_table.swapi_characters_cache_table.name
