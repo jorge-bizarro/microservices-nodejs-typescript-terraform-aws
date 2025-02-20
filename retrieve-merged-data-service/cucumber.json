@@ -1,0 +1,11 @@
+{
+    "default": {
+        "require": ["features/step_definitions/**/*.{ts,js}"],
+        "requireModule": ["ts-node/register"],
+        "format": ["progress-bar"],
+        "paths": ["features/**/*.feature"],
+        "formatOptions": {
+            "snippetInterface": "synchronous"
+        }
+    }
+}
