@@ -9,6 +9,9 @@ provider:
   timeout: 15
   architecture: arm64
   logRetentionInDays: 3
+  tracing:
+    lambda: true
+    apiGateway: true
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
     CACHE_TABLE_NAME: ${ssm:/challengue-rimac/dynamodb/swapi_characters_cache_table_name}
