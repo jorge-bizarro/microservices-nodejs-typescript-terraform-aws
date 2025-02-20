@@ -26,35 +26,61 @@ provider:
           Resource: ${ssm:/challengue-rimac/dynamodb/swapi_characters_cache_table_arn}
 
 functions:
-  swaggerUI:
-    handler: swagger.handler
+  openapi:
+    handler: src/openapi.handler
+    events:
+      - http:
+          path: openapi.yml
+          method: get
+          cors: true
+
+  docs:
+    handler: src/docs.handler
     events:
       - http:
           path: docs
           method: get
           cors: true
+
   retrieveMergedData:
     handler: src/handler.handler
     events:
       - http:
-          path: "/fusionados/{id}"
-          method: "get"
+          path: fusionados/{id}
+          method: get
           cors: true
           private: true
           documentation:
-            summary: "Retorna los personajes de Star Wars con un consejo"
-            description: "Integra 2 APIs externas para obtener los personajes de Star Wars y sus consejos además usa un cache para bajar la latencia"
-            pathParams:
-            - name: "id"
-              description: "ID del personaje"
-              schema:
-                type: "string"
+            operationId: retrieveMergedData
+            summary: "Obtener personaje de Star Wars y un consejo suyo"
+            description: "Obtener personajes de Star Wars y un consejo suyo"
+            tag: Star Wars
             methodResponses:
               - statusCode: 200
                 responseBody:
-                  description: "Successful response"
+                  description: "Respuesta exitosa"
                 responseModels:
-                  "application/json": SearchCharacterResponse
+                  application/json: SearchCharacterResponse
+              - statusCode: 401
+                responseBody:
+                  description: "No autorizado - API key inválida o faltante"
+                responseModels:
+                  application/json: ErrorResponse
+              - statusCode: 403
+                responseBody:
+                  description: "Acceso prohibido"
+                responseModels:
+                  application/json: ErrorResponse
+              - statusCode: 429
+                responseBody:
+                  description: "Rate limit excedido"
+                responseModels:
+                  application/json: ErrorResponse
+              - statusCode: 500
+                responseBody:
+                  description: "Error interno del servidor"
+                responseModels:
+                  application/json: ErrorResponse
 
 plugins:
   - serverless-offline
@@ -70,8 +96,7 @@ custom:
     sourcesContent: false
     external:
       - '@aws-sdk/*'
-      - axios
-      - zod
+    packager: npm
   prune:
     automatic: true
     number: 1
@@ -79,9 +104,23 @@ custom:
     version: "1.0.0"
     title: "Obtener personaje de Star Wars y un consejo suyo"
     description: "Obtener personajes de Star Wars y un consejo suyo"
+    openapi: '3.0.0'
+    basePath: /dev
+    tags:
+      - name: 'Star Wars'
+        description: 'Endpoints relacionados con Star Wars'
     models:
+      - name: ErrorResponse
+        contentType: application/json
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              description: "Mensaje de error"
       - name: SearchCharacterResponse
-        contentType: "application/json"
+        description: 'Respuesta exitosa'
+        contentType: application/json
         schema:
           type: object
           properties:
@@ -89,10 +128,10 @@ custom:
               type: string
               description: "Nombre del personaje"
             altura:
-              type: number
+              type: string
               description: "Altura del personaje"
             masa:
-              type: number
+              type: string
               description: "Peso del personaje"
             consejo:
               type: string
@@ -107,7 +146,7 @@ custom:
               type: string
               description: "Color de piel del personaje"
             anio_de_nacimiento:
-              type: number
+              type: string
               description: "Año de nacimiento del personaje"
             genero:
               type: string
@@ -115,10 +154,10 @@ custom:
 
 package:
   individually: true
+  excludeDevDependencies: true
   patterns:
-    - '!**'
     - 'src/**'
-    - 'node_modules/**'
+    - openapi.yml
 
 resources:
   Outputs:
