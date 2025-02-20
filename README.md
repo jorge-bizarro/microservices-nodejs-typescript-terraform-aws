@@ -1,10 +1,13 @@
 # microservices-nodejs-typescript-terraform-aws
 
 ![Node.js](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
-![Terraform](https://img.shields.io/badge/Terraform-%23734F96.svg?style=for-the-badge&logo=terraform&logoColor=white)
 ![Serverless](https://img.shields.io/badge/Serverless-%23000000.svg?style=for-the-badge&logo=serverless&logoColor=white)
-![Swagger](https://img.shields.io/badge/Swagger-F7DF1E.svg?style=for-the-badge&logo=Swagger&logoColor=black)
+![Terraform](https://img.shields.io/badge/Terraform-%23734F96.svg?style=for-the-badge&logo=terraform&logoColor=white)
+![Openapi](https://img.shields.io/badge/OpenAPI-%23000000.svg?style=for-the-badge&logo=openapi-initiative&logoColor=white)
+![Jest](https://img.shields.io/badge/Jest-%23C21325.svg?style=for-the-badge&logo=Jest&logoColor=white)
+![Cucumber](https://img.shields.io/badge/Cucumber-%23000000.svg?style=for-the-badge&logo=cucumber&logoColor=white)
 
 ### Features
 
